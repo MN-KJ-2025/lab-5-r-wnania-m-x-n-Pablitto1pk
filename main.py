@@ -29,7 +29,7 @@ def spare_matrix_Abt(m: int, n: int) -> tuple[np.ndarray, np.ndarray] | None:
     else:
         A = np.zeros((m, n))
         t = np.linspace(0, 1, m)
-        b = np.ndarray([np.cos(4 * ti) for ti in t])
+        b = np.array([np.cos(4 * ti) for ti in t])
         for i in range(m):
             for j in range(n):
                 A[i][j] = t[i] ** j
