@@ -1,12 +1,3 @@
-# =================================  TESTY  ===================================
-# Testy do tego pliku zostały podzielone na dwie kategorie:
-#
-#  1. `..._invalid_input`:
-#     - Sprawdzające poprawną obsługę nieprawidłowych danych wejściowych.
-#
-#  2. `..._correct_solution`:
-#     - Weryfikujące poprawność wyników dla prawidłowych danych wejściowych.
-# =============================================================================
 import numpy as np
 
 
@@ -24,17 +15,22 @@ def spare_matrix_Abt(m: int, n: int) -> tuple[np.ndarray, np.ndarray] | None:
             - Wektor b (m,).
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
+
+    if not isinstance(m, int) or not isinstance(n, int):
+        return None
     if m <= 0 or n <= 0:
-        return None 
-    else:
-        A = np.zeros((m, n))
-        t = np.linspace(0, 1, m)
-        b = np.array([np.cos(4 * ti) for ti in t])
-        for i in range(m):
-            for j in range(n):
-                A[i][j] = t[i] ** j
-        return A, b
-        
+        return None
+
+    t = np.linspace(0, 1, m)
+
+    A = np.zeros((m, n), dtype=float)
+    for i in range(m):
+        A[i] = t[i] ** np.arange(n)
+
+    b = np.cos(4 * t)
+
+    return A, b
+
 
 def square_from_rectan(
     A: np.ndarray, b: np.ndarray
@@ -54,15 +50,20 @@ def square_from_rectan(
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
 
+    if not isinstance(A, np.ndarray) or not isinstance(b, np.ndarray):
+        return None
     if A.ndim != 2 or b.ndim != 1:
         return None
     if A.shape[0] != b.shape[0]:
         return None
-    else:
+
+    try:
         A_new = A.T @ A
         b_new = A.T @ b
+    except Exception:
+        return None
 
-        return A_new, b_new
+    return A_new, b_new
 
 
 def residual_norm(A: np.ndarray, x: np.ndarray, b: np.ndarray) -> float | None:
@@ -79,6 +80,20 @@ def residual_norm(A: np.ndarray, x: np.ndarray, b: np.ndarray) -> float | None:
         Jeżeli dane wejściowe są niepoprawne funkcja zwraca `None`.
     """
 
+    if not isinstance(A, np.ndarray) or not isinstance(x, np.ndarray) or not isinstance(b, np.ndarray):
+        return None
+    if A.ndim != 2 or b.ndim != 1 or x.ndim != 1:
+        return None
 
+    m, n = A.shape
+    if x.shape[0] != n or b.shape[0] != m:
+        return None
+
+    try:
+        r = b - A @ x
+    except Exception:
+        return None
+
+    return float(np.linalg.norm(r))
 
     
