@@ -1,5 +1,6 @@
 import numpy as np
-
+import scipy as sp
+import matplotlib.pyplot as plt
 
 def spare_matrix_Abt(m: int, n: int) -> tuple[np.ndarray, np.ndarray] | None:
     """Funkcja tworząca zestaw składający się z macierzy A (m,n) i
@@ -95,5 +96,24 @@ def residual_norm(A: np.ndarray, x: np.ndarray, b: np.ndarray) -> float | None:
         return None
 
     return float(np.linalg.norm(r))
+'''
+    ##Macierz A : [[2 3 3 3] [9 8 3 0] [2 2 4 9] [4 6 1 9] [8 2 0 7] [4 8 4 0]] Wektor b : [3 4 8 1 6 2]
+A = np.array([
+    [2, 3, 3, 3],
+    [9, 8, 3, 0],
+    [2, 2, 4, 9],
+    [4, 6, 1, 9],
+    [8, 2, 0, 7],
+    [4, 8, 4, 0]
+], dtype=float)
 
-    
+b = np.array([3, 4, 8, 1, 6, 2], dtype=float)
+
+Q, R = np.linalg.qr(A, mode="reduced")
+y = Q.T @ b
+x = sp.linalg.solve_triangular(R, y, lower=False)
+# Trzecia współrzędna
+x3 = x[2]
+
+print(x3)
+'''
